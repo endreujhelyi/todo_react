@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import {TodoForm, TodoList} from './todo';
-import {addTodo} from './lib/todoHelpers';
+import {addTodo, generateId} from './lib/todoHelpers';
 
 
 class App extends Component {
@@ -17,10 +17,18 @@ class App extends Component {
       currentTodo: ''
     };
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleSubmit() {
-    evt
+  handleSubmit(evt) {
+    evt.preventDefault();
+    const newId = generateId();
+    const newTodo = {id: newId, name: this.state.currentTodo, isComplete: false};
+    const updatedTodos = addTodo(this.state.todos, newTodo);
+    this.setState({
+      todos: updatedTodos,
+      currentTodo: '',
+    });
   }
 
   handleInputChange (evt) {
